@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#0b1315">
+  <meta name="color-scheme" content="dark">
+  <title>connect4</title>
+</head>
+<body>
+  <main>
+    <form action="splash.html">
+      <button type="submit">X</button>
+    </form>
+
+    <section hidden>
+        <h1>Waiting for an opponent</h1>
+        <h2>01:43</h2>
+    </section>
+
+    <section hidden>
+        <h1>You win</h1>
+
+        <form action="game.html" method="get">
+          <input type="text" value="<username>" name="username" hidden>
+          <button type="submit">New match</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>user1241236 | user2</h1>
+
+        <img src="images/board.svg">
+        
+        <h2>It's your turn</h2>
+    </section>
+  </main>
+</body>
+</html>
