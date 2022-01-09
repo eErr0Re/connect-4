@@ -1,0 +1,42 @@
+{
+  "name": "connect-4",
+  "version": "1.0.0",
+  "description": "Connect4 web game.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "startsys": "sudo node app.js",
+    "lint": "node_modules/.bin/eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "connect4"
+  ],
+  "contributors": [
+    {
+      "name": "Nils Marten Mikk",
+      "url": "https://github.com/eErr0Re",
+      "email": "nilsmikk@gmail.com"
+    },
+    {
+      "name": "Alexandru Şologon"
+    }
+  ],
+  "homepage": "https://github.com/eErr0Re/connect-4",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eErr0Re/connect-4/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eErr0Re/connect-4"
+  },
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "ws": "^8.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0"
+  }
+}
