@@ -20,7 +20,7 @@
         ],
         "quotes": [
             "warn",
-            "single"
+            "double"
         ],
         "semi": [
             "error",
@@ -73,6 +73,7 @@
         "no-sequences": "warn",
         "no-throw-literal": "error",
         "no-undef-init": "warn",
+        "no-undef": "off",
         "no-unneeded-ternary": "warn",
         "no-unused-expressions": "warn",
         "no-useless-computed-key": "warn",
@@ -139,13 +140,12 @@
         "max-len": [
             "warn",
             {
-                "code": 100
+                "code": 120
             }
         ],
         "new-parens": "warn",
         "no-multi-spaces": "warn",
         "no-multiple-empty-lines": "warn",
-        "no-trailing-spaces": "warn",
         "no-whitespace-before-property": "warn",
         "nonblock-statement-body-position": [
             "warn",
@@ -187,6 +187,7 @@
         "wrap-iife": [
             "warn",
             "inside"
-        ]
+        ],
+        "no-unused-vars": "warn"
     }
 }
