@@ -1,3 +1,5 @@
+/* eslint-env browser, es2021 */
+/* exported endScreen */
 const endScreen = (() =>
 {
     const _result =

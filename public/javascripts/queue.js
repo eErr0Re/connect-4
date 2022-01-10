@@ -1,3 +1,5 @@
+/* eslint-env browser, es2021 */
+/* exported queue */
 const queue = (() =>
 {
     const _queueScreen = document.querySelector("#queue");
@@ -61,7 +63,8 @@ const queue = (() =>
         // @ts-ignore
         _queueScreen.hidden = false;
 
-        setTimeout(() => { _matchFound("a", "b", false)}, 5000); // Delete this
+        // Delete this
+        setTimeout(_matchFound, 5000, "a", "b", false);
 
         // TODO
     }

@@ -1,3 +1,5 @@
+/* eslint-env browser, es2021 */
+/* exported gameState */
 const gameState = (() =>
 {
     const _title = document.querySelector("#game h2");
@@ -25,7 +27,8 @@ const gameState = (() =>
         _title.innerHTML = `${username1} | ${username2}`;
         _info.innerHTML = _turn ? "It's your turn" : `Waiting for ${username2}`;
 
-        setTimeout(() => { endScreen.display("win"); }, 5000); // Delete this
+        // Delete this
+        setTimeout(endScreen.display, 5000, "win");
 
         // TODO
     }
