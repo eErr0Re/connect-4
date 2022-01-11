@@ -153,7 +153,10 @@
                 }
             }
         ],
-        "object-curly-spacing": "warn",
+        "object-curly-spacing": [
+            "warn",
+            "always"
+        ],
         "operator-linebreak": [
             "warn",
             "after"
