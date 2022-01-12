@@ -5,8 +5,11 @@ const path = require("path");
 const router = require(path.join(__dirname, "routes", "index.js"));
 
 const websocket = require("ws");
+/** @type {typeof import("./game")} Game} */
 const Game = require(path.join(__dirname, "game.js"));
+/** @type {import("./public/javascripts/messages").Messages} Messages} */
 const messages = require(path.join(__dirname, "public", "javascripts", "messages.js"));
+/** @type {import("./public/javascripts/types").Types} Types} */
 const types = require(path.join(__dirname, "public", "javascripts", "types.js"));
 
 // Use command line argument as port if valid, else use port 3000
@@ -63,15 +66,15 @@ wss.on("connection", (ws) =>
         {
             try
             {
-                const result = game.move(playerType, msgObj.column);
+                const moveResult = game.move(playerType, msgObj.column);
                 const opponent = game.getSocket(opponentType);
 
                 // Normal move
-                const message = JSON.stringify(new messages.O_MOVE(msgObj.column, result.row, playerType, result.over));
+                const message = JSON.stringify(new messages.O_MOVE(msgObj.column, moveResult.row, playerType, moveResult.result));
                 ws.send(message);
                 opponent.send(message);
                 // If game over, close connections
-                if (result.over !== null)
+                if (moveResult.result !== null)
                 {
                     ws.close();
                     opponent.close();

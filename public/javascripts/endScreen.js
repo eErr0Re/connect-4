@@ -19,7 +19,7 @@ const endScreen = (() =>
     /**
      * Enables the end screen.
      *
-     * @param {!ResultType} result Result of the match
+     * @param {ResultType} result Result of the match
      */
     function enable(result)
     {

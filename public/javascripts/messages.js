@@ -7,9 +7,9 @@
  * @property {MessageType} T_GAME_INFO Info message type
  * @property {MessageType} T_MOVE Move message type
  * @property {MessageType} T_QUIT Quit message type
- * @property {function(!string) : void} O_JOIN Constructs a join message
- * @property {function(!string, !string, !PlayerType, !number) : void} O_GAME_INFO Constructs an info message
- * @property {function(!number, number=, PlayerType=, ResultType=) : void} O_MOVE Constructs a move message
+ * @property {function(string) : void} O_JOIN Constructs a join message
+ * @property {function(string, string, PlayerType, number) : void} O_GAME_INFO Constructs an info message
+ * @property {function(number, number=, PlayerType=, ResultType=) : void} O_MOVE Constructs a move message
  * @property {MessageObject} O_QUIT Quit message
  */
 
@@ -40,7 +40,7 @@
     /**
      * Constructs a join message.
      * 
-     * @param {!string} user Username
+     * @param {string} user Username
      */
     exports.O_JOIN = function(user)
     {
@@ -55,10 +55,10 @@
     /**
      * Constructs an info message.
      * 
-     * @param {!string} user1 Name of player 1
-     * @param {!string} user2 Name of player 2
-     * @param {!PlayerType} playerType Type of player
-     * @param {!number} startTime Start time
+     * @param {string} user1 Name of player 1
+     * @param {string} user2 Name of player 2
+     * @param {PlayerType} playerType Type of player
+     * @param {number} startTime Start time
      */
     exports.O_GAME_INFO = function(user1, user2, playerType, startTime)
     {
@@ -79,7 +79,7 @@
     /**
      * Constructs a move message.
      * 
-     * @param {!number} column Column number 
+     * @param {number} column Column number 
      * @param {number=} row Row number
      * @param {PlayerType=} playerType Type of player
      * @param {ResultType=} result Result

@@ -3,20 +3,42 @@
 const websocket = require("ws");
 const path = require("path");
 
+/** @type {import("./public/javascripts/types").Types} Types} */
 const types = require(path.join(__dirname, "public", "javascripts", "types.js"));
+/** @type {import("./public/javascripts/messages").Messages} Messages} */
 const messages = require(path.join(__dirname, "public", "javascripts", "messages.js"));
+
+/** @typedef {import("./public/javascripts/types").PlayerType} PlayerType} */
+/** @typedef {import("./public/javascripts/types").ResultType} ResultType} */
+/** @typedef {import("./public/javascripts/messages").MessageObject} MessageObject} */
+
+/**
+ * @typedef MoveResult
+ * @type {object}
+ * @property {number} row Row number
+ * @property {?ResultType} result Result
+ */
 
 class Game
 {
     // ---------- Private variables ---------- //
 
+    /** @type {websocket} Player 1 WebSocket*/
     #player1;
+    /** @type {websocket} Player 2 WebSocket */ 
     #player2;
+    /** @type {string} Player 1 name */
     #name1;
+    /** @type {string} Player 2 name */
     #name2;
+    /** @type {PlayerType} Whose turn is it */
     #turn;
+    /** @type {number} Start time */
     #startTime;
+    /** @type {PlayerType[][]} Game board */
     #board;
+    /** @type {number} Number of discs */
+    #numberOfDiscs;
 
 
     // ---------- Private methods ---------- //
@@ -24,7 +46,7 @@ class Game
     /**
      * Adds a disc to the board.
      * 
-     * @param {types} type Type of player 
+     * @param {PlayerType} type Type of player 
      * @param {number} column Column number
      * @returns {number} Index of the first free row
      */
@@ -37,6 +59,7 @@ class Game
             {
                 this.#board[column][i] = type;
                 row = i;
+                ++this.#numberOfDiscs;
                 break;
             }
         }
@@ -46,24 +69,107 @@ class Game
     /**
      * Checks whether the game has ended.
      * 
-     * @param {types} type Type of player
+     * @param {PlayerType} type Type of player
      * @param {number} column Column number
      * @param {number} row Row number
-     * @returns {types} Result (Win or Draw)
+     * @returns {?ResultType} Result (Win or Draw)
      */
     #evaluate(type, column, row)
     {
+        // ----- Check if win ----- //
+
+        // Check column
+        if (row >= 3)
+        {
+            let win = true;
+            for (let i = 1; i < 4; ++i)
+            {
+                if (this.#board[column][row - i] !== type)
+                {
+                    win = false;
+                    break;
+                }
+            }
+            if (win)
+                return types.WIN;
+        }
+
+        // Check row
+        let num = 1;
+
+        // Check left of disc
+        for (let i = column - 1; i >= 0; --i)
+        {
+            if (this.#board[i][row] === type)
+                ++num;
+            else break;
+        }
+
+        // Check right of disc
+        for (let i = column + 1; i < 7; ++i)
+        {
+            if (this.#board[i][row] === type)
+                ++num;
+            else break;
+        }
+
+        if (num >= 4)
+            return types.WIN;
+
+        // Check down diagonal
+        num = 1;
+
+        // Check left of disc
+        for (let c = column - 1, r = row + 1; c >= 0 && r < 6; --c, ++r)
+        {
+            if (this.#board[c][r] === type)
+                ++num;
+            else break;
+        }
+
+        // Check right of disc
+        for (let c = column + 1, r = row - 1; c < 7 && r >= 0; ++c, --r)
+        {
+            if (this.#board[c][r] === type)
+                ++num;
+            else break;
+        }
+
+        if (num >= 4)
+            return types.WIN;
+
+        // Check up diagonal
+        num = 1;
+
+        // Check left of disc
+        for (let c = column - 1, r = row - 1; c >= 0 && r >= 0; --c, --r)
+        {
+            if (this.#board[c][r] === type)
+                ++num;
+            else break;
+        }
+
+        // Check right of disc
+        for (let c = column + 1, r = row + 1; c < 7 && r < 6; ++c, ++r)
+        {
+            if (this.#board[c][r] === type)
+                ++num;
+            else break;
+        }
+
+        if (num >= 4)
+            return types.WIN;
+
+
+        // ----- Check if draw ----- //
+
+        if (this.#numberOfDiscs === 42)
+            return types.DRAW;
+
+
+        // ----- Normal move ----- //
+
         return null;
-        // TODO: Proper game logic
-
-        // If win
-        // return types.WIN;
-
-        // If draw
-        // return types.DRAW;
-
-        // Else
-        // return null;
     }
 
 
@@ -79,6 +185,7 @@ class Game
         this.#name1 = null;
         this.#name2 = null;
         this.#turn = types.PLAYER_1;
+        this.#numberOfDiscs = 0;
 
         // Bottom-left: (0, 0); Top-right: (6, 5)
         this.#board = [];
@@ -105,7 +212,7 @@ class Game
      * Adds a player to the game.
      * 
      * @param {websocket} ws WebSocket
-     * @return {types} Type of player
+     * @return {PlayerType} Type of player
      */
     addPlayer(ws)
     {
@@ -127,7 +234,7 @@ class Game
     /**
      * Sets the name of the player.
      * 
-     * @param {types} type Type of player
+     * @param {PlayerType} type Type of player
      * @param {string} name Player name
      */
     setName(type, name)
@@ -142,7 +249,7 @@ class Game
     /**
      * Gets the name of the player.
      * 
-     * @param {types} type Type of player 
+     * @param {PlayerType} type Type of player 
      * @returns {string} Player name
      */
     getName(type)
@@ -157,8 +264,8 @@ class Game
     /**
      * Gets a message object containing information about the game.
      * 
-     * @param {types} type Type of player 
-     * @returns {messages} Information about the game
+     * @param {PlayerType} type Type of player 
+     * @returns {MessageObject} Information about the game
      */
     getInfo(type)
     {
@@ -170,7 +277,7 @@ class Game
     /**
      * Gets the websocket of the player.
      * 
-     * @param {types} type Type of player
+     * @param {PlayerType} type Type of player
      * @returns {websocket} WebSocket of the player
      */
     getSocket(type)
@@ -185,9 +292,9 @@ class Game
     /**
      * Attempts to perform a move.
      * 
-     * @param {types} type Type of player
+     * @param {PlayerType} type Type of player
      * @param {number} column Column number
-     * @returns {types} Result
+     * @returns {MoveResult} Result
      */
     move(type, column)
     {
@@ -201,14 +308,14 @@ class Game
         this.#turn = !this.#turn;
         return {
             row, 
-            over: this.#evaluate(type, column, row) 
+            result: this.#evaluate(type, column, row) 
         };
     }
 
     /**
      * Clear the socket of player.
      * 
-     * @param {types} type Type of player 
+     * @param {PlayerType} type Type of player 
      */
     clearSocket(type)
     {
@@ -219,6 +326,9 @@ class Game
         else throw new Error("Invalid type");
     }
 
+    /**
+     * Sets the start time.
+     */
     start()
     {
         this.#startTime = Date.now();
