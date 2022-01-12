@@ -11,6 +11,8 @@ const Game = require(path.join(__dirname, "game.js"));
 const messages = require(path.join(__dirname, "public", "javascripts", "messages.js"));
 /** @type {import("./public/javascripts/types").Types} Types} */
 const types = require(path.join(__dirname, "public", "javascripts", "types.js"));
+/** @type {typeof import("./stats")} Stats} */
+const stats = require(path.join(__dirname, "stats.js"));
 
 // Use command line argument as port if valid, else use port 3000
 const port = Number(process.argv[2]) > 0 && Number(process.argv[2]) <= 65535 ? Number(process.argv[2]) : 3000;
@@ -21,6 +23,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.disable("x-powered-by");
 
 app.use("/", router);
+
+// Get statistics
+app.get("/statistics", (req, res) =>
+{
+    const statistics = new messages.O_STATISTICS(stats.getPlayersOnline(), stats.getGamesPlayed(), stats.getTimeSpent());
+    res.json(statistics);
+});
 
 // Create HTTP and WebSocket servers
 const server = http.createServer(app);
@@ -33,6 +42,9 @@ let currentGame = new Game();
 // On websocket connection received
 wss.on("connection", (ws) =>
 {
+    // Update players online
+    stats.addPlayer();
+
     const game = currentGame;
 
     // Set the player and opponent type
@@ -58,6 +70,9 @@ wss.on("connection", (ws) =>
                 game.start();
                 ws.send(JSON.stringify(game.getInfo(playerType)));
                 game.getSocket(opponentType).send(JSON.stringify(game.getInfo(opponentType)));
+
+                // Update games played
+                stats.addGame();
             }
         }
 
@@ -78,6 +93,9 @@ wss.on("connection", (ws) =>
                 {
                     ws.close();
                     opponent.close();
+
+                    // Update total time
+                    stats.addTimeSpent(Date.now() - game.getStart());
                 }
             }
             catch (err)
@@ -95,11 +113,17 @@ wss.on("connection", (ws) =>
         game.clearSocket(playerType);
         ws.close();
 
-        if (code === 1001 && opponent !== null)
+        if ((code === 1001 || code === 1006) && opponent !== null)
         {
+            // Update total time
+            stats.addTimeSpent(Date.now() - game.getStart());
+
             opponent.send(JSON.stringify(messages.O_QUIT));
             opponent.close();
         }
+
+        // Update players online
+        stats.removePlayer();
     });
 });
 

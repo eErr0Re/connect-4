@@ -333,6 +333,16 @@ class Game
     {
         this.#startTime = Date.now();
     }
+
+    /**
+     * Gets the start time of the game.
+     * 
+     * @returns {number} Start time of the game
+     */
+    getStart()
+    {
+        return this.#startTime;
+    }
 }
 
 module.exports = Game;

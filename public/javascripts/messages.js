@@ -11,6 +11,7 @@
  * @property {function(string, string, PlayerType, number) : void} O_GAME_INFO Constructs an info message
  * @property {function(number, number=, PlayerType=, ResultType=) : void} O_MOVE Constructs a move message
  * @property {MessageObject} O_QUIT Quit message
+ * @property {function(number, number, number) : void} O_STATISTICS Constructs a statistics message
  */
 
 /**
@@ -29,6 +30,14 @@
  * @property {number=} column Column number
  * @property {number=} row Row number
  * @property {ResultType=} result Result
+ */
+
+/**
+ * @typedef Statistics
+ * @type {object}
+ * @property {number} online Number of players online
+ * @property {number} games Number of games played
+ * @property {number} time Time spent in milliseconds
  */
 
 ((exports) =>
@@ -98,5 +107,20 @@
     exports.T_QUIT = "QUIT";
     /** @type {MessageObject} Quit message */
     exports.O_QUIT = { type: exports.T_QUIT };
+
+    // Statistics sent by server
+    /**
+     * Constructs a statistics message.
+     * 
+     * @param {number} online Number of players online
+     * @param {number} games Number of games played
+     * @param {number} time Time spent in milliseconds
+     */
+    exports.O_STATISTICS = function(online, games, time)
+    {
+        this.online = online;
+        this.games = games;
+        this.time = time;
+    };
 // @ts-ignore
 })(typeof exports === "undefined" ? this.messages = {} : exports);
