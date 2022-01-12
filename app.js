@@ -1,3 +1,4 @@
+/* eslint-env node, es2021 */
 const express = require("express");
 const http = require("http");
 const path = require("path");
@@ -51,6 +52,7 @@ wss.on("connection", (ws) =>
             if (game.isFull())
             {
                 currentGame = new Game(); // Create a new game for next players
+                game.start();
                 ws.send(JSON.stringify(game.getInfo(playerType)));
                 game.getSocket(opponentType).send(JSON.stringify(game.getInfo(opponentType)));
             }
@@ -61,13 +63,20 @@ wss.on("connection", (ws) =>
         {
             try
             {
-                const result = game.move(playerType, msgObj.move);
+                const result = game.move(playerType, msgObj.column);
                 const opponent = game.getSocket(opponentType);
 
-                // If win or draw, send move with result to players
-                if (result === types.WIN || result === types.DRAW)
+                // Normal move
+                if (result.over === null)
                 {
-                    const message = JSON.stringify(new messages.O_MOVE(msgObj.move, playerType, result));
+                    const message = JSON.stringify(new messages.O_MOVE(msgObj.column, result.row, playerType));
+                    ws.send(message);
+                    opponent.send(message);
+                }
+                // If game over, send move with result to players
+                else
+                {
+                    const message = JSON.stringify(new messages.O_MOVE(msgObj.column, result.row, playerType, result.over));
                     ws.send(message);
                     opponent.send(message);
 
@@ -76,12 +85,6 @@ wss.on("connection", (ws) =>
                     opponent.close();
                 }
                 // Send move to players
-                else
-                {
-                    const message = JSON.stringify(new messages.O_MOVE(msgObj.move, playerType));
-                    ws.send(message);
-                    opponent.send(message);
-                }
             }
             catch (err)
             {

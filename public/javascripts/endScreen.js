@@ -2,50 +2,53 @@
 /* exported endScreen */
 const endScreen = (() =>
 {
-    const _result =
-    {
-        win: "win",
-        lose: "lose",
-        draw: "draw",
-        quit: "quit"
-    };
+    // ---------- Private variables ---------- //
+    
+    const _screen = document.querySelector("#end-screen");
+
+
+    // ---------- Public methods ---------- //
 
     /**
-     * Displays the end screen.
+     * Enables the end screen.
      *
      * @param {string} result Result of the match
      */
-    function display(result)
+    function enable(result)
     {
-        const _endScreen = document.querySelector("#end-screen");
-        const _gameScreen = document.querySelector("#game");
-        const _title = document.querySelector("#end-screen h1");
+        const _title = _screen.querySelector("#h1");
 
         switch (result)
         {
-            case _result.win:
+            case types.WIN:
                 _title.innerHTML = "You win";
                 break;
-            case _result.lose:
-                _title.innerHTML = `${gameState.getUsername2()} wins`;
+            case types.LOSE:
+                _title.innerHTML = `${game.getOpponentName()} wins`;
                 break;
-            case _result.draw:
+            case types.DRAW:
                 _title.innerHTML = "Draw";
                 break;
-            case _result.quit:
-                _title.innerHTML = `${gameState.getUsername2()} has quit`;
+            case messages.T_QUIT:
+                _title.innerHTML = `${game.getOpponentName()} has quit`;
                 break;
             default:
-                throw new Error("Invalid state");
+                throw new Error("Invalid result");
         }
 
-        // @ts-ignore
-        _endScreen.hidden = false;
-        // @ts-ignore
-        _gameScreen.hidden = true;
+        _screen.hidden = false;
+    }
+
+    /**
+     * Disables the end screen.
+     */
+    function disable()
+    {
+        _screen.hidden = true;
     }
 
     return {
-        display
+        enable,
+        disable
     };
 })();

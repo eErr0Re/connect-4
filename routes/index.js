@@ -1,3 +1,4 @@
+/* eslint-env node, es2021 */
 const express = require("express");
 const path = require("path");
 

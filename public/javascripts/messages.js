@@ -1,3 +1,4 @@
+/* eslint-env browser, es2021, node */
 ((exports) =>
 {
     // Message send by client when joining game
@@ -16,7 +17,7 @@
         this.user1 = user1;
         this.user2 = user2;
         this.playerType = playerType;
-        this.starTime = startTime;
+        this.startTime = startTime;
     };
 
     /*
@@ -24,10 +25,11 @@
      * If sent by server: playerType is set; if win/draw, result is set.
      */
     exports.T_MOVE = "MOVE";
-    exports.O_MOVE = function(move, playerType = null, result = null)
+    exports.O_MOVE = function(column, row = null, playerType = null, result = null)
     {
         this.type = exports.T_MOVE;
-        this.move = move;
+        this.column = column;
+        this.row = row;
         this.playerType = playerType;
         this.result = result;
     };

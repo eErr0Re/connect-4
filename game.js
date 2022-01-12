@@ -1,3 +1,4 @@
+/* eslint-env node, es2021 */
 // eslint-disable-next-line no-unused-vars
 const websocket = require("ws");
 const path = require("path");
@@ -7,7 +8,7 @@ const messages = require(path.join(__dirname, "public", "javascripts", "messages
 
 class Game
 {
-    // ---------- Private properties ---------- //
+    // ---------- Private variables ---------- //
 
     #player1;
     #player2;
@@ -78,7 +79,16 @@ class Game
         this.#name1 = null;
         this.#name2 = null;
         this.#turn = types.PLAYER_1;
-        this.#board = Array(7).fill(Array(6).fill("null")); // Top-left: (0, 5); Bottom-right: (6, 0)
+
+        // Bottom-left: (0, 0); Top-right: (6, 5)
+        this.#board = [];
+        for (let i = 0; i < 7; ++i)
+        {
+            const row = [];
+            for (let j = 0; j < 6; ++j)
+                row[j] = null;
+            this.#board[i] = row;
+        }
     }
 
     /**
@@ -125,10 +135,7 @@ class Game
         if (type === types.PLAYER_1)
             this.#name1 = name;
         else if (type === types.PLAYER_2)
-        {
             this.#name2 = name;
-            this.#startTime = Date.now();
-        }
         else throw new Error("Invalid type");
     }
 
@@ -192,7 +199,10 @@ class Game
             throw new Error("Invalid type");
         const row = this.#addToBoard(type, column);
         this.#turn = !this.#turn;
-        return this.#evaluate(type, column, row);
+        return {
+            row, 
+            over: this.#evaluate(type, column, row) 
+        };
     }
 
     /**
@@ -207,6 +217,11 @@ class Game
         else if (type === types.PLAYER_2)
             this.#player2 = null;
         else throw new Error("Invalid type");
+    }
+
+    start()
+    {
+        this.#startTime = Date.now();
     }
 }
 

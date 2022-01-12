@@ -12,30 +12,34 @@
       <button type="submit">X</button>
     </form>
 
-    <section id="queue">
+    <section id="queue-screen">
         <h1>Waiting for an opponent</h1>
         <h2>00:00</h2>
     </section>
 
     <section id="end-screen" hidden>
-        <h1>You win</h1>
+        <h1></h1>
 
-        <button type="submit">New match</button>
+        <button>New match</button>
     </section>
 
-    <section id="game" hidden>
-        <h2>user1241236 | user2</h2>
+    <section id="game-screen" hidden>
+        <h2></h2>
 
-        <img src="images/board.svg" alt="Game board">
+        <img src="images/board.svg" alt="Game board" hidden>
+        <div id="board-grid"></div>
         
-        <h2>It's your turn</h2>
+        <h2></h2>
+
+        <h3></h3>
     </section>
   </main>
   <script src="javascripts/messages.js"></script>
   <script src="javascripts/types.js"></script>
-  <script src="javascripts/endScreen.js"></script>
-  <script src="javascripts/gameState.js"></script>
-  <script src="javascripts/queue.js"></script>
   <script src="javascripts/game.js"></script>
+  <script src="javascripts/endScreen.js"></script>
+  <script src="javascripts/queueScreen.js"></script>
+  <script src="javascripts/gameScreen.js"></script>
+  <script src="javascripts/main.js"></script>
 </body>
 </html>
