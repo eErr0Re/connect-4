@@ -53,8 +53,8 @@ class Game
      */
     #evaluate(type, column, row)
     {
-        throw new Error("Method not implemented");
-        // TODO
+        return null;
+        // TODO: Proper game logic
 
         // If win
         // return types.WIN;

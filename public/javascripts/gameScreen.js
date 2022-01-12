@@ -5,13 +5,20 @@ const gameScreen = (() =>
 {
     // ---------- Private variables ---------- //
 
+    /** @type {HTMLElement} Game screen */
     const _screen = document.querySelector("#game-screen");
+    /** Players text */
     const _playersText = _screen.querySelector("h2");
+    /** Turn text */
     const _turnText = _screen.querySelectorAll("h2")[1];
 
+    /** @type {string} Player name */
     let _player = null;
+    /** @type {string} Opponent name */
     let _opponent = null;
+    /** @type {string} Player colour */
     let _colour = null;
+    /** @type {number} Timer interval ID */
     let _timer = null;
 
 
@@ -22,7 +29,9 @@ const gameScreen = (() =>
      */
     function _startTimer()
     {
+        /** Start time */
         const start = game.getStart();
+        /** Timer text */
         const time = _screen.querySelector("h3");
 
         if (_timer !== null)
@@ -30,7 +39,7 @@ const gameScreen = (() =>
 
         time.innerHTML = "00:00";
 
-        _timer = setInterval(() =>
+        _timer = window.setInterval(() =>
         {
             const elapsed = Date.now() - start;
             const minutes = Math.floor(elapsed / 60000);
@@ -43,6 +52,7 @@ const gameScreen = (() =>
     // Generate grid
     (() =>
     {
+        /** @type {HTMLDivElement} Board */
         const board = document.querySelector("#board-grid");
 
         // TODO: Remove after adding proper CSS
@@ -61,7 +71,9 @@ const gameScreen = (() =>
             column.style.width = "100px";
             column.style.height = "600px";
 
+            /** Column number */
             const col = i;
+            /** @type {HTMLDivElement[]} Cells */
             const children = [];
 
             // Create cells
@@ -74,28 +86,30 @@ const gameScreen = (() =>
                 // TODO: Remove after adding proper CSS
                 disc.style.width = "100px";
                 disc.style.height = "100px";
+                disc.style.borderRadius = "50%";
 
                 column.prepend(disc);
             }
 
-            // If player's turn, on mouse enter, display disc
+            // If player's turn, on mouse enter, set disc colour
             column.addEventListener("mouseenter", () =>
             {
                 if (!game.getTurn())
                     return;
 
+                /** Index of the first free row */
                 const index = game.firstFree(col);
+
                 if (index !== null)
                     children[index].style.backgroundColor = _colour;
             });
 
-            // If player's turn, on mouse leave, hide disc
+            // On mouse leave, unset disc colour
             column.addEventListener("mouseleave", () =>
             {
-                if (!game.getTurn())
-                    return;
-
+                /** Index of the first free row */
                 const index = game.firstFree(col);
+
                 if (index !== null)
                     children[index].style.backgroundColor = "unset";
             });
@@ -119,8 +133,34 @@ const gameScreen = (() =>
     function setTurn()
     {
         if (game.getTurn())
-            _turnText.innerHTML = "It's your turn";
-        else _turnText.innerHTML = `Waiting for ${_opponent}`;
+            _turnText.innerHTML = "It's your turn"; // TODO: Add colour
+        else _turnText.innerHTML = `Waiting for ${_opponent}`; // TODO: Add colour
+    }
+
+    /**
+     * Adds a disc to the board.
+     * 
+     * @param {number} column Column number
+     * @param {number} row Row number
+     * @param {PlayerType} type Type of player
+     */
+    function addDisc(column, row, type)
+    {
+        /** @type {HTMLDivElement} Column */
+        const col = (document.querySelectorAll(".column")[column]);
+        /** @type {HTMLDivElement} Disc */
+        const disc = (col.querySelectorAll(".disc")[5 - row]);
+
+        disc.style.backgroundColor = type === types.PLAYER_1 ? "blue" : "orange"; // TODO: Use correct colour
+    }
+ 
+    /**
+     * Stops the timer.
+     */
+    function stopTimer()
+    {
+        clearInterval(_timer);
+        _timer = null;
     }
 
     /**
@@ -132,7 +172,7 @@ const gameScreen = (() =>
         _opponent = game.getOpponentName();
         _colour = game.getType() === types.PLAYER_1 ? "blue" : "orange"; // TODO: use correct colours
 
-        _playersText.innerHTML = `${_player} | ${_opponent}`;
+        _playersText.innerHTML = `${_player} | ${_opponent}`; // TODO: Add colour
         setTurn();
         _startTimer();
 
@@ -148,33 +188,23 @@ const gameScreen = (() =>
     }
 
     /**
-     * Adds a disc to the board.
-     * 
-     * @param {number} column Column number
-     * @param {number} row Row number
-     * @param {boolean} type Type of player
+     * Resets all discs.
      */
-    function addDisc(column, row, type)
+    function clear()
     {
-        const col = document.querySelectorAll(".column")[column];
-        const disc = col.querySelectorAll(".disc")[5 - row];
+        /** @type {NodeListOf<HTMLDivElement>} Discs*/
+        const discs = document.querySelectorAll(".disc");
 
-        disc.style.backgroundColor = type === types.PLAYER_1 ? "blue" : "orange";
-    }
-
-    /**
-     * Stops the timer.
-     */
-    function stopTimer()
-    {
-        clearInterval(_timer);
-        _timer = null;
+        for (const d of discs)
+            d.style.backgroundColor = "unset";
     }
 
     return {
         enable,
         disable,
         addDisc,
-        stopTimer
+        stopTimer,
+        clear,
+        setTurn
     };
 })();

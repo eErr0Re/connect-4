@@ -1,7 +1,16 @@
 /* eslint-env browser, es2021 */
+
+/** @typedef {import("./messages").Messages} Messages */
+/** @typedef {import("./messages").MessageObject} MessageObject */
+
 (() =>
 {
+    /** @type {WebSocket} WebSocket */
     let ws = null;
+
+    /**
+     * Starts a WebSocket connection
+     */
     function connect()
     {
         queueScreen.enable();
@@ -22,7 +31,7 @@
         // On message received
         ws.addEventListener("message", (msg) =>
         {   
-            // Parse message
+            /** @type {MessageObject} Message object */
             const msgObj = JSON.parse(msg.data);
             
             // Received game info
@@ -37,9 +46,14 @@
             // Received a move
             if (msgObj.type === messages.T_MOVE)
             {
+                // Draw disc
+                game.addDisc(msgObj.column, msgObj.playerType);
+                gameScreen.addDisc(msgObj.column, msgObj.row, msgObj.playerType);
+
                 // A player has won
                 if (msgObj.result === types.WIN)
                 {
+                    ws = null;
                     if (msgObj.playerType === game.getType())
                         endScreen.enable(types.WIN);
                     else endScreen.enable(types.LOSE);
@@ -48,15 +62,11 @@
                 // The game is a draw
                 else if (msgObj.result === types.DRAW)
                 {
+                    ws = null;
                     endScreen.enable(types.DRAW);
                     gameScreen.stopTimer();
                 }
-                // Normal move
-                else
-                {
-                    game.addDisc(msgObj.column, msgObj.playerType);
-                    gameScreen.addDisc(msgObj.column, msgObj.row, msgObj.playerType);
-                }
+                else gameScreen.setTurn();
             }
 
             // The opponent has quit the game
@@ -74,7 +84,10 @@
     newMatchButton.addEventListener("click", () =>
     {
         if (ws === null)
+        {
             connect();
+            gameScreen.clear();
+        }
     });
 
     // Make first connection

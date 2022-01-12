@@ -1,15 +1,25 @@
 /* eslint-env browser, es2021 */
 /* exported game */
+
+/** @typedef {import("./types").PlayerType} PlayerType */
+
 const game = (() =>
 {
     // ---------- Private variables ---------- //
 
+    /** @type {string} Player name */
     let _player;
+    /** @type {string} Opponent name */
     let _opponent;
+    /** @type {PlayerType} Player type*/
     let _type;
+    /** @type {boolean} Turn */
     let _turn;
+    /** @type {number} Start time */
     let _startTime;
+    /** @type {Array} Array of column counts */
     let _board;
+    /** @type {WebSocket} WebSocket */
     let _ws;
 
     
@@ -20,7 +30,7 @@ const game = (() =>
      *
      * @param {string} username1 Username of player1
      * @param {string} username2 Username of player2
-     * @param {boolean} type Type of player
+     * @param {PlayerType} type Type of player
      * @param {number} startTime Start time
      */
     function init(username1, username2, type, startTime, ws)
@@ -67,7 +77,7 @@ const game = (() =>
     /**
      * Returns the type of the player
      * 
-     * @returns {boolean} Type of player
+     * @returns {PlayerType} Type of player
      */
     function getType()
     {
@@ -78,22 +88,20 @@ const game = (() =>
      * Adds a disc to the board.
      * 
      * @param {number} column Column number
-     * @param {string} type Type of player 
+     * @param {PlayerType} type Type of player 
      */
     function addDisc(column, type)
     {
         ++_board[column];
 
-        if (type === _type)
-            _turn = false;
-        else _turn = true;
+        _turn = type !== _type;
     }
 
     /**
      * Returns the first free row or null if no free rows.
      * 
      * @param {number} column Column number
-     * @returns {number} Row number
+     * @returns {?number} Row number
      */
     function firstFree(column)
     {
@@ -124,6 +132,14 @@ const game = (() =>
         return _startTime;
     }
 
+    /**
+     * Sets turn to false.
+     */
+    function end()
+    {
+        _turn = false;
+    }
+
     return {
         init,
         getTurn,
@@ -133,6 +149,7 @@ const game = (() =>
         addDisc,
         firstFree,
         move,
-        getStart
+        getStart,
+        end
     };
 })();

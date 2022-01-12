@@ -67,24 +67,15 @@ wss.on("connection", (ws) =>
                 const opponent = game.getSocket(opponentType);
 
                 // Normal move
-                if (result.over === null)
+                const message = JSON.stringify(new messages.O_MOVE(msgObj.column, result.row, playerType, result.over));
+                ws.send(message);
+                opponent.send(message);
+                // If game over, close connections
+                if (result.over !== null)
                 {
-                    const message = JSON.stringify(new messages.O_MOVE(msgObj.column, result.row, playerType));
-                    ws.send(message);
-                    opponent.send(message);
-                }
-                // If game over, send move with result to players
-                else
-                {
-                    const message = JSON.stringify(new messages.O_MOVE(msgObj.column, result.row, playerType, result.over));
-                    ws.send(message);
-                    opponent.send(message);
-
-                    // Close connections
                     ws.close();
                     opponent.close();
                 }
-                // Send move to players
             }
             catch (err)
             {
