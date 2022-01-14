@@ -5,15 +5,26 @@
 (() =>
 {
     /** @type {HTMLButtonElement} Info / close button*/
-    const infoButton = document.querySelector(".info-close");
+    const infoButton = document.querySelector("#menu");
 
     // Display info when click on button
     infoButton.addEventListener("click", () =>
     {
         /** @type {HTMLElement} Info div */
-        const info = document.querySelector("#info");
+        const info = document.querySelector("#menu + section");
 
-        info.hidden = !info.hidden;
+        if (info.classList.contains("info-open"))
+        {
+            info.classList.remove("info-open");
+            void info.offsetWidth; // Redraw element
+            info.classList.add("info-close");
+        }
+        else
+        {
+            info.classList.remove("info-close");
+            void info.offsetWidth; // Redraw element
+            info.classList.add("info-open");
+        }
     });
 
     /**
@@ -21,8 +32,8 @@
      */
     function updateStatistics()
     {
-        /** @type {HTMLParagraphElement} Statistics paragraph */
-        const statsText = document.querySelector("aside p");
+        /** @type {NodeListOf<HTMLDivElement>} Statistics paragraph */
+        const statsText = document.querySelectorAll("aside div:nth-child(2n)");
         // @ts-ignore
         axios
             .get("/statistics")
@@ -34,16 +45,18 @@
                 const hours = Math.floor(stats.time / 3600000);
                 const minutes = Math.floor(stats.time / 60000) % 60;
 
-                statsText.innerHTML = 
-                `Players online: ${stats.online}<br>` +
-                `Games played: ${stats.games}<br>` +
-                `Time wasted: ${hours ? `${hours}h` : ""} ${minutes}min`;
+                statsText[0].innerHTML = `${stats.online}`;
+                statsText[1].innerHTML = `${stats.games}`;
+                statsText[2].innerHTML = `${hours ? `${hours}h` : ""} ${minutes}min`;
             })
-            .catch(console.error);
+            .catch(() =>
+            {
+                console.error("Could not get statistics.");
+            });
     }
 
     updateStatistics();
 
     // Poll for statistics
-    setInterval(updateStatistics, 1000);
+    setInterval(updateStatistics, 5000);
 })();

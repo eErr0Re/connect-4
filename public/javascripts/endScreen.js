@@ -27,23 +27,32 @@ const endScreen = (() =>
         game.end();
 
         /** Time to wait before showing end screen */
-        let time = 3000;
+        let time = 1500;
 
         switch (result)
         {
             case types.WIN:
-                _title.innerHTML = "You win"; // TODO: Add colour"
+            {
+                const colour = game.getType() === types.PLAYER_1 ? "text-primary" : "text-secondary";
+                _title.innerHTML = `<span class="${colour}">You</span> win`;
                 break;
+            }
             case types.LOSE:
-                _title.innerHTML = `${game.getOpponentName()} wins`; // TODO: Add colour
+            {
+                const colour = game.getType() === types.PLAYER_2 ? "text-primary" : "text-secondary";
+                _title.innerHTML = `<span class="${colour}">${game.getOpponentName()}</span> wins`;
                 break;
+            }
             case types.DRAW:
                 _title.innerHTML = "Draw";
                 break;
             case messages.T_QUIT:
-                _title.innerHTML = `${game.getOpponentName()} has quit`;
+            {
+                const colour = game.getType() === types.PLAYER_2 ? "text-primary" : "text-secondary";
+                _title.innerHTML = `<span class="${colour}">${game.getOpponentName()}</span> has quit`;
                 time = 0;
                 break;
+            }
             default:
                 throw new Error("Invalid result");
         }

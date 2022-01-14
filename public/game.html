@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="theme-color" content="#0b1315">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="normal">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/game.css">
   <title>connect4</title>
 </head>
 <body>
   <main>
     <form action="/">
-      <button type="submit">X</button>
+      <button type="submit" id="menu"></button>
     </form>
 
     <section id="queue-screen">
@@ -18,20 +20,18 @@
     </section>
 
     <section id="end-screen" hidden>
-        <h1></h1>
-
-        <button>New match</button>
+      <h1></h1>
+      <button id="play">Play again</button>
     </section>
 
     <section id="game-screen" hidden>
+      <div>
         <h2></h2>
-
-        <img src="images/board.svg" alt="Game board" hidden>
+        <img src="images/board.svg" alt="Game board">
         <div id="board-grid"></div>
-        
         <h2></h2>
-
-        <h3></h3>
+      </div>
+      <p></p>
     </section>
   </main>
   <script src="javascripts/messages.js"></script>

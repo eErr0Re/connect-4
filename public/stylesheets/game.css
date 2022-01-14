@@ -1,0 +1,152 @@
+/* ---------- Close button ---------- */
+
+#menu {
+    position: absolute;
+    z-index: 5;
+
+    animation: 0.5s ease-out fade-in;
+}
+
+#menu::before {
+    content: "\e901";
+    font-size: 1.2rem;
+}
+
+
+/* ---------- Queue screen ---------- */
+
+#queue-screen {
+    position: absolute;
+    top: 0;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding-top: 30vh;
+
+    text-align: center;
+    
+    animation: 0.5s ease-out fade-in;
+    user-select: none;
+}
+
+/* Title */
+#queue-screen h1 {
+    margin-bottom: 0.8rem;
+
+    font-size: 2.8rem;
+}
+
+/* Subtitle */
+#queue-screen h2 {
+    font-size: 2.1rem;
+}
+
+
+/* --------- Game screen ---------- */
+
+#game-screen {
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+}
+
+/* Game area */
+#game-screen > div{
+    position: absolute;
+    inset: 0;
+
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+
+    text-align: center;
+}
+
+#game-screen h2:nth-of-type(2) {
+    user-select: none;
+}
+
+/* Board image */
+img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    height: 60vmin;
+    margin: auto;
+    
+    pointer-events: none;
+    user-select: none;
+}
+
+
+/* ----- Board ----- */
+
+#board-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: 60vmin;
+    width: 70vmin;
+    margin-bottom: 8%;
+    margin-top: 8%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.column {
+    display: grid;
+}
+
+.column div {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.primary-disc {
+    background-color: var(--primary-color);
+    animation: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1)pop;
+}
+
+.secondary-disc {
+    background-color: var(--secondary-color);
+    animation: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1) pop;
+}
+
+/* Time */
+#game-screen p {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+
+    width: fit-content;
+    height: fit-content;
+
+    color: var(--text-color-dark);
+
+    user-select: none;
+}
+
+
+/* ---------- End screen ---------- */
+
+#end-screen {
+    position: absolute;
+    z-index: 3;
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
+    padding-top: 30vh;
+
+    background-color: rgba(11, 19, 21, 0.97);
+
+    font-size: 3rem;
+    text-align: center;
+    
+    animation: 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) fade-in;
+    user-select: none;
+}
