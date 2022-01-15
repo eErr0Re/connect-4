@@ -34,7 +34,7 @@ const gameScreen = (() =>
     function _startTimer()
     {
         /** Start time */
-        const start = game.getStart();
+        const start = Date.now();
         /** Timer text */
         const time = _screen.querySelector("p");
 

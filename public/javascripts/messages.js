@@ -26,7 +26,6 @@
  * @property {string=} user1 Name of player 1
  * @property {string=} user2 Name of player 2
  * @property {PlayerType=} playerType Type of player
- * @property {number=} startTime Start time
  * @property {number=} column Column number
  * @property {number=} row Row number
  * @property {ResultType=} result Result
@@ -67,15 +66,13 @@
      * @param {string} user1 Name of player 1
      * @param {string} user2 Name of player 2
      * @param {PlayerType} playerType Type of player
-     * @param {number} startTime Start time
      */
-    exports.O_GAME_INFO = function(user1, user2, playerType, startTime)
+    exports.O_GAME_INFO = function(user1, user2, playerType)
     {
         this.type = exports.T_GAME_INFO;
         this.user1 = user1;
         this.user2 = user2;
         this.playerType = playerType;
-        this.startTime = startTime;
     };
 
     /*

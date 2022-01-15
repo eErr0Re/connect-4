@@ -15,8 +15,6 @@ const game = (() =>
     let _type;
     /** @type {boolean} Turn */
     let _turn;
-    /** @type {number} Start time */
-    let _startTime;
     /** @type {Array} Array of column counts */
     let _board;
     /** @type {WebSocket} WebSocket */
@@ -38,7 +36,6 @@ const game = (() =>
         _player = type === types.PLAYER_1 ? username1 : username2;
         _opponent = type === types.PLAYER_1 ? username2 : username1;
         _type = type;
-        _startTime = startTime;
         _turn = type === types.PLAYER_1;
         _board = Array(7).fill(0); // Array of column counts
         _ws = ws;
@@ -123,16 +120,6 @@ const game = (() =>
     }
 
     /**
-     * Gets the start time.
-     * 
-     * @returns {number} Start time
-     */
-    function getStart()
-    {
-        return _startTime;
-    }
-
-    /**
      * Sets turn to false.
      */
     function end()
@@ -149,7 +136,6 @@ const game = (() =>
         addDisc,
         firstFree,
         move,
-        getStart,
         end
     };
 })();

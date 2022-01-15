@@ -268,7 +268,7 @@ class Game
     {
         if (type !== types.PLAYER_1 && type !== types.PLAYER_2)
             throw new Error("Invalid type");
-        return new messages.O_GAME_INFO(this.#name1, this.#name2, type, this.#startTime);
+        return new messages.O_GAME_INFO(this.#name1, this.#name2, type);
     }
 
     /**
