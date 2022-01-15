@@ -92,6 +92,30 @@ app.get("/statistics", (req, res) =>
 
 app.use("/", router);
 
+// Not found
+app.use((req, res) => 
+{
+    res.status(404);
+    res.render("error",
+        {
+            code: "404",
+            color: "#d5996e",
+            message: "Resource not found"
+        });
+});
+
+// Server error
+app.use((err, req, res, next) => 
+{
+    res.status("500");
+    res.render("error",
+        {
+            code: "500",
+            color: "#6ebbd5",
+            message: "Server error"
+        });
+});
+
 // ---------- WebSocket ---------- //
 
 const wss = new websocket.Server({ server: (config.https === true ? httpsServer : httpServer) });
