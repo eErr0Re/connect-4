@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "startsys": "sudo node app.js",
+    "redirect": "redirect() { sudo iptables -t nat -I PREROUTING -p tcp --dport ${1} -j REDIRECT --to-ports ${2} && sudo iptables -t nat -I OUTPUT -p tcp -o lo --dport ${1} -j REDIRECT --to-ports ${2} && echo \"Redirected port ${1} to port ${2}\" && node app.js ${2}; }; redirect",
     "lint": "node_modules/.bin/eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

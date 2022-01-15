@@ -13,4 +13,5 @@ Install dependencies using `npm install`
 
 Start the server using `npm start <optional port>`
 
-Start the server with a system port using `npm run startsys <port>`
+Start the server with a system port using `npm run redirect <port1> <port2>`<br>
+This starts the server using &lt;port2&gt; and redirects &lt;port1&gt; to &lt;port2&gt;
