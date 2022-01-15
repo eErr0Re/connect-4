@@ -97,7 +97,7 @@ app.use("/", router);
 
 // ---------- WebSocket ---------- //
 
-const wss = new websocket.Server({ server: httpServer });
+const wss = new websocket.Server({ server: (config.https === true ? httpsServer : httpServer) });
 
 let currentGame = new Game();
 
