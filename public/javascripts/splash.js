@@ -55,8 +55,6 @@
             });
     }
 
-    updateStatistics();
-
     // Poll for statistics
     setInterval(updateStatistics, 5000);
 })();

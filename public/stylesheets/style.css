@@ -81,7 +81,7 @@ form {
     background-color: transparent;
 }
 
-#menu::before {
+#menu::after {
     position: relative;
     inset: 0;
 
@@ -141,7 +141,7 @@ form {
 
 @media (max-width: 960px), (max-height: 500px)
 {
-    body::after {
+    body::before {
         content: "Resolution not supported :(";
 
         position: absolute;

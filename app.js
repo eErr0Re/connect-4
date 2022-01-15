@@ -3,17 +3,13 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 const fs = require("fs");
-const router = require(path.join(__dirname, "routes", "index.js"));
-
 const websocket = require("ws");
-/** @type {typeof import("./game")} Game} */
-const Game = require(path.join(__dirname, "game.js"));
-/** @type {import("./public/javascripts/messages").Messages} Messages} */
-const messages = require(path.join(__dirname, "public", "javascripts", "messages.js"));
-/** @type {import("./public/javascripts/types").Types} Types} */
-const types = require(path.join(__dirname, "public", "javascripts", "types.js"));
-/** @type {typeof import("./stats")} Stats} */
-const stats = require(path.join(__dirname, "stats.js"));
+
+const router = require("./routes/index");
+const Game = require("./game");
+const messages = require("./public/javascripts/messages");
+const types = require("./public/javascripts/types");
+const stats = require("./stats");
 
 // Get config file
 const config = (() => 
@@ -47,6 +43,7 @@ const httpsPort = validatePort(config.httpsPort, 8443);
 
 const app = express();
 app.disable("x-powered-by");
+app.set("view engine", "ejs");
 
 // Create HTTP server
 const httpServer = http.createServer(app);

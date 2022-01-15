@@ -1,18 +1,28 @@
 /* eslint-env node, es2021 */
 const express = require("express");
-const path = require("path");
+const stats = require("../stats");
 
 const router = express.Router();
-const publicDirectory = path.join(__dirname, "..", "public");
 
+// Get splash screen
 router.get("/", (req, res) =>
 {
-    res.sendFile("splash.html", { root: publicDirectory });
+    const time = stats.getTimeSpent();
+    const hours = Math.floor(time / 3600000);
+    const minutes = Math.floor(time / 60000) % 60;
+
+    res.render("splash.ejs", 
+        {
+            playersOnline: stats.getPlayersOnline(),
+            gamesPlayed: stats.getGamesPlayed(),
+            timeSpent: `${hours ? `${hours}h` : ""} ${minutes}min`
+        });
 });
 
+// Get game screen
 router.get("/play", (req, res) =>
 {
-    res.sendFile("game.html", { root: publicDirectory });
+    res.render("game.ejs");
 });
 
 module.exports = router;

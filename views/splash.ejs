@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="theme-color" content="#0b1315">
-  <meta name="color-scheme" content="normal">
-  <link rel="stylesheet" href="/stylesheets/style.css">
+  <%- include("partials/head"); -%>
   <link rel="stylesheet" href="/stylesheets/splash.css">
-  <title>connect4</title>
 </head>
 <body>
   <main>
@@ -30,9 +26,9 @@
     </section>
 
     <aside>
-      <div>Players online:</div><div></div>
-      <div>Games played:</div><div></div>
-      <div>Time wasted:</div><div></div>
+      <div>Players online:</div><div><%= playersOnline %></div>
+      <div>Games played:</div><div><%= gamesPlayed %></div>
+      <div>Time wasted:</div><div><%= timeSpent %></div>
     </aside> 
   </main>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

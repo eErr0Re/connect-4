@@ -1,12 +1,9 @@
 /* eslint-env node, es2021 */
 // eslint-disable-next-line no-unused-vars
 const websocket = require("ws");
-const path = require("path");
 
-/** @type {import("./public/javascripts/types").Types} Types} */
-const types = require(path.join(__dirname, "public", "javascripts", "types.js"));
-/** @type {import("./public/javascripts/messages").Messages} Messages} */
-const messages = require(path.join(__dirname, "public", "javascripts", "messages.js"));
+const types = require("./public/javascripts/types");
+const messages = require("./public/javascripts/messages");
 
 /** @typedef {import("./public/javascripts/types").PlayerType} PlayerType} */
 /** @typedef {import("./public/javascripts/types").ResultType} ResultType} */
