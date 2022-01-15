@@ -18,7 +18,7 @@
         endScreen.disable();
 
         // Open connection
-        ws = new WebSocket(`ws://${window.location.host}`);
+        ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}`);
 
         // On connection open, send username
         ws.addEventListener("open", () =>
