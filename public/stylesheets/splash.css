@@ -1,12 +1,14 @@
 /* ---------- Middle section ---------- */
 
-section:last-of-type {
+main > section:last-of-type {
     position: absolute;
     inset: 0;
 
     width: fit-content;
     height: fit-content;
     margin: 25vh auto auto auto;
+
+    text-align: center;
 }
 
 /* Title */
@@ -47,14 +49,31 @@ input, #play {
 
 /* ---------- Info section ---------- */
 
-section:first-of-type {
+/* Info screen */
+main > div:first-of-type {
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+}
+
+/* Info box */
+div > section:first-of-type {
     overflow-y: auto;
-    width: 25%;
+
+    width: 20%;
     max-height: calc(100% - 5rem - 60px);
     margin-left: -100%;
     margin-top: 2rem;
 
     color: var(--text-color-dark);
+}
+
+/* Info text */
+ul {
+    padding: 0;
+
+    list-style-type: none;
 }
 
 /* ----- Info animations ----- */
@@ -138,3 +157,44 @@ aside {
     }
 }
 
+
+/* ---------- Screen sizes ---------- */
+
+@media (max-width: 960px) {
+    /* Info list */
+    li {
+        font-size: 1.2rem;
+    }
+ }
+
+@media (max-width: 768px) {
+    /* Info section */
+    div > section:first-of-type {
+        position: relative;
+        z-index: 3;
+
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        margin-top: 4rem;
+        padding-right: 30px;
+
+        background-color: var(--background-color);
+    }
+
+    /* Info title */
+    h2 {
+        font-size: 3rem;
+    }
+
+    /* Info text */
+    li {
+        font-size: 1.5rem;
+    }
+
+    /* Statistics */
+    aside {
+        left: 30px;
+        font-size: 1.2rem;
+    }
+}

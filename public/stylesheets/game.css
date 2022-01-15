@@ -74,7 +74,7 @@ img {
     inset: 0;
     z-index: 1;
 
-    height: 60vmin;
+    width: 70vmin;
     margin: auto;
     
     pointer-events: none;
@@ -87,7 +87,6 @@ img {
 #board-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    height: 60vmin;
     width: 70vmin;
     margin-bottom: 8%;
     margin-top: 8%;
@@ -100,10 +99,11 @@ img {
 }
 
 .column div {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
     z-index: 0;
+
+    width: 100%;
+    padding-top:100%;
+    border-radius: 50%;
 }
 
 .primary-disc {
@@ -149,4 +149,53 @@ img {
     
     animation: 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) fade-in;
     user-select: none;
+}
+
+
+/* ---------- Screen sizes ---------- */
+
+@media (max-width: 768px) {
+    /* Queue title */
+    #queue-screen h1 {
+        font-size: 2.2rem; 
+    }
+
+    /* Queue subtitle */
+    #queue-screen h2 {
+        font-size: 2rem;
+    }
+
+    /* Board */
+    img, #board-grid {
+        width: 90vmin;
+    }
+
+    /* End screen title */
+    #end-screen h1 {
+        font-size: 2.4rem;
+    }
+ }
+
+
+ /* ---------- Not supported ---------- */
+
+ @media (max-width: 768px) and (min-aspect-ratio: 768/1080)
+{
+    body::before {
+        content: "Resolution not supported :(";
+
+        position: absolute;
+        top: 0;
+        z-index: 10;
+
+
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 30px;
+        
+        background-color: var(--background-color);
+        
+        text-align: center;
+    }
 }

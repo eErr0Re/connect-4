@@ -22,8 +22,16 @@
     --input-border-color: #3a3d3d;
 }
 
-body {
+html {
     height: 100vh;
+}
+
+body {
+    position: fixed;
+    overflow: hidden;
+
+    height: 100%;
+    width: 100vw;
     margin: 0;
 
     color: var(--text-color);
@@ -41,8 +49,8 @@ input, button {
     margin: 1rem 0.5rem 0 0.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    border: 3px solid;
-    border-radius: 20px;
+    border: 0.15rem solid;
+    border-radius: 1.5rem;
 
     color: var(--text-color);
 
@@ -74,7 +82,7 @@ form {
     height: 3rem;
     margin: 30px 0 0 30px;
     padding: 0;
-    border: 5px solid var(--text-color-dark);
+    border: 0.25rem solid var(--text-color-dark);
     border-radius: 50%;
 
     color: var(--text-color-dark);
@@ -137,9 +145,26 @@ form {
     }
 }
 
+
+/* ---------- Screen sizes ---------- */
+
+@media (max-width: 960px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+ @media (max-width: 768px) {
+    html {
+        font-size: 3.1vw;
+    }
+}
+
+
 /* ---------- Not supported ---------- */
 
-@media (max-width: 960px), (max-height: 500px)
+@media (max-height: 400px) and (min-width: 769px),
+    (max-width: 768px) and (min-aspect-ratio: 10/8.5)
 {
     body::before {
         content: "Resolution not supported :(";
