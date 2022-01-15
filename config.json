@@ -1,0 +1,8 @@
+{
+    "httpPort": 8080,
+    "httpsPort": 8443,
+
+    "https": false,
+    "key": "credentials/server.key",
+    "cert": "credentials/server.cert"
+}

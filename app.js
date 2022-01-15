@@ -2,6 +2,7 @@
 const express = require("express");
 const http = require("http");
 const path = require("path");
+const fs = require("fs");
 const router = require(path.join(__dirname, "routes", "index.js"));
 
 const websocket = require("ws");
@@ -14,15 +15,75 @@ const types = require(path.join(__dirname, "public", "javascripts", "types.js"))
 /** @type {typeof import("./stats")} Stats} */
 const stats = require(path.join(__dirname, "stats.js"));
 
-// Use command line argument as port if valid, else use port 3000
-const port = Number(process.argv[2]) > 0 && Number(process.argv[2]) <= 65535 ? Number(process.argv[2]) : 3000;
+// Get config file
+const config = (() => 
+{
+    try
+    {
+        return JSON.parse(fs.readFileSync(path.join(__dirname, "config.json")).toString());
+    }
+    catch (err)
+    {
+        console.error(`Could not open config file. ${err.message}`);
+    }
+    return {};
+})();
+
+/**
+ * Validates the port number. If invalid returns an alternative port number.
+ * 
+ * @param {number} port Port number 
+ * @param {number=} alt Alternative port number 
+ * @returns {number} A valid port number
+ */
+function validatePort(port, alt = 3000)
+{
+    return port > 0 && port <= 65535 ? port : alt;
+}
+
+// Set port numbers
+const httpPort = validatePort(config.httpPort, 8080);
+const httpsPort = validatePort(config.httpsPort, 8443);
 
 const app = express();
-
-app.use(express.static(path.join(__dirname, "public")));
 app.disable("x-powered-by");
 
-app.use("/", router);
+// Create HTTP server
+const httpServer = http.createServer(app);
+
+// Create HTTPS server
+let httpsServer = null;
+if (config.https === true)
+{
+    const https = require("https");
+
+    let options;
+    try
+    {
+        options =
+        {
+            key: fs.readFileSync(config.key),
+            cert: fs.readFileSync(config.cert)
+        };
+    }
+    catch (err)
+    {
+        console.log(`Could not open certificate file. ${err.message}\nAdd certificate or disable https in config.json`);
+        process.exit(1);
+    }
+
+    httpsServer = https.createServer(options, app);
+
+    // Redirect http to https
+    app.use((req, res, next) =>
+    {
+        if (req.secure)
+            next();
+        else res.redirect(`https://${req.hostname}${req.path}`);
+    });
+}
+
+app.use(express.static(path.join(__dirname, "public")));
 
 // Get statistics
 app.get("/statistics", (req, res) =>
@@ -31,11 +92,12 @@ app.get("/statistics", (req, res) =>
     res.json(statistics);
 });
 
-// Create HTTP and WebSocket servers
-const server = http.createServer(app);
-const wss = new websocket.Server({ server });
+
+app.use("/", router);
 
 // ---------- WebSocket ---------- //
+
+const wss = new websocket.Server({ server: httpServer });
 
 let currentGame = new Game();
 
@@ -127,7 +189,15 @@ wss.on("connection", (ws) =>
     });
 });
 
-server.listen(port, () =>
+httpServer.listen(httpPort, () =>
 {
-    console.log(`Listening on port ${port}. Press Ctrl-C to quit.`);
+    console.log(`HTTP server listening on port ${httpPort}.`);
 });
+
+if (httpsServer !== null)
+{
+    httpsServer.listen(httpsPort, () =>
+    {
+        console.log(`HTTPS server listening on port ${httpsPort}`);
+    });
+}

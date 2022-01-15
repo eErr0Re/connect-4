@@ -7,11 +7,38 @@ Preliminaries:
 * Node.js
 * npm
 
-Install dependencies using `npm install`
+Install dependencies using
+```Shell
+npm install
+```
 
 ## Initialisation
 
-Start the server using `npm start <optional port>`
+You can set the port numbers in config.json
 
-Start the server with a system port using `npm run redirect <port1> <port2>`<br>
-This starts the server using &lt;port2&gt; and redirects &lt;port1&gt; to &lt;port2&gt;
+Start the server using:
+```Shell
+npm start
+```
+
+### Using system ports
+
+System (well-known) ports are port numbers in the range from 0 to 1023. You can redirect these ports to the ports your server is listening on.
+
+To redirect ports:
+```Shell
+sudo iptables -t nat -I PREROUTING -p tcp --dport <system port> -j REDIRECT --to-ports <server port>
+```
+To redirect ports for localhost:
+```Shell
+sudo iptables -t nat -I OUTPUT -p tcp -o lo --dport <system port> -j REDIRECT --to-ports <server port>
+```
+
+### Using HTTPS
+
+To enable HTTPS, modify config.json:
+```JSON
+"https": true,
+"key": "<path to your private key>",
+"cert": "<path to your certificate>"
+```
