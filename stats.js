@@ -1,12 +1,43 @@
 /* eslint-env node, es2021 */
+const fs = require("fs").promises;
+const path = require("path");
 
 // ---------- Private variables ---------- //
 
 let _playersOnline = 0;
-let _gamesPlayed = 0;
-let _timeSpent = 0;
 
+const _savedStats =
+{
+    gamesPlayed: 0,
+    timeSpent: 0
+};
+
+// Read saved statistics
+fs.readFile(path.join(__dirname, "stats.json"))
+    .then((data) =>
+    {
+        const json = JSON.parse(data.toString());
+        _savedStats.gamesPlayed = json.gamesPlayed;
+        _savedStats.timeSpent = json.timeSpent;
+    })
+    .catch(() =>
+    {
+        fs.writeFile(path.join(__dirname, "stats.json"), JSON.stringify(_savedStats));
+        console.log("Created stats.json");
+    });
+
+
+// ---------- Private methods ---------- //
+
+/**
+ * Save statistics to stats.json
+ */
+function _save()
+{
+    fs.writeFile(path.join(__dirname, "stats.json"), JSON.stringify(_savedStats));
+}
     
+
 // ---------- Public methods ---------- //
 
 /**
@@ -40,7 +71,8 @@ module.exports.getPlayersOnline = () =>
  */
 module.exports.addGame = () =>
 {
-    ++_gamesPlayed;
+    ++_savedStats.gamesPlayed;
+    _save();
 };
 
 /**
@@ -50,7 +82,7 @@ module.exports.addGame = () =>
  */
 module.exports.getGamesPlayed = () =>
 {
-    return _gamesPlayed;
+    return _savedStats.gamesPlayed;
 };
 
 /**
@@ -60,7 +92,8 @@ module.exports.getGamesPlayed = () =>
  */
 module.exports.addTimeSpent = (time) =>
 {
-    _timeSpent += time;
+    _savedStats.timeSpent += time;
+    _save();
 };
 
 /**
@@ -70,5 +103,5 @@ module.exports.addTimeSpent = (time) =>
  */
 module.exports.getTimeSpent = () =>
 {
-    return _timeSpent;
+    return _savedStats.timeSpent;
 };

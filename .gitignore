@@ -3,3 +3,4 @@ node_modules
 jsconfig.json
 globals.d.ts
 credentials
+stats.json
