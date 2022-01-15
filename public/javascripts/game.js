@@ -29,9 +29,9 @@ const game = (() =>
      * @param {string} username1 Username of player1
      * @param {string} username2 Username of player2
      * @param {PlayerType} type Type of player
-     * @param {number} startTime Start time
+     * @param {WebSocket} ws WebSocket
      */
-    function init(username1, username2, type, startTime, ws)
+    function init(username1, username2, type, ws)
     {
         _player = type === types.PLAYER_1 ? username1 : username2;
         _opponent = type === types.PLAYER_1 ? username2 : username1;

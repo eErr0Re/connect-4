@@ -38,7 +38,7 @@
             if (msgObj.type === messages.T_GAME_INFO)
             {
                 // Initialise game
-                game.init(msgObj.user1, msgObj.user2, msgObj.playerType, msgObj.startTime, ws);
+                game.init(msgObj.user1, msgObj.user2, msgObj.playerType, ws);
                 gameScreen.enable();
                 queueScreen.disable();
             }
