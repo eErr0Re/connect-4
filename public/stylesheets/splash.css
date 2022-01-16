@@ -46,6 +46,17 @@ input, #play {
     animation: 0.3s 0.7s cubic-bezier(0.18, 0.89, 0.32, 1.28) backwards pop-vertical;
 }
 
+/* Invalid username message */
+form div {
+    padding-top: 0.8rem;
+    padding-left: 1.5rem;
+
+    color: var(--text-color-dark);
+
+    font-size: 0.9rem;
+    text-align: left;
+}
+
 
 /* ---------- Info section ---------- */
 

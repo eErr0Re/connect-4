@@ -27,6 +27,20 @@
         }
     });
 
+    // Form validation
+    const inputField = document.querySelector("input");
+
+    inputField.addEventListener("input", () =>
+    {
+        /** @type {HTMLInputElement} Input */
+        const format = document.querySelector("form div");
+        /** @type {HTMLButtonElement} Play button */
+        const button = document.querySelector("#play");
+
+        format.hidden = inputField.value.length <= 10;
+        button.disabled = inputField.value.length > 10;
+    });
+
     /**
      * Updates the statistics.
      */

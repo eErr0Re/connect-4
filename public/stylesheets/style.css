@@ -18,6 +18,7 @@
     --button-border-color: #1b4f61;
     --button-hover-color: #36758a;
     --button-active-color: #68b8d3;
+    --button-disabled-background-color: #6d6d6d;
     --input-background-color: #242728;
     --input-border-color: #3a3d3d;
 }
@@ -122,6 +123,12 @@ form {
     background-color: var(--button-active-color);
 }
 
+#play:disabled {
+    background-color: var(--button-disabled-background-color);
+    border-color: var(--input-border-color);
+
+    transition: all 0.2s;
+}
 
 /* ----- Keyframes ----- */
 

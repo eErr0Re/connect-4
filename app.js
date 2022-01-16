@@ -11,6 +11,9 @@ const messages = require("./public/javascripts/messages");
 const types = require("./public/javascripts/types");
 const stats = require("./stats");
 
+/** @typedef {import("./public/javascripts/messages").MessageObject} MessageObject} */
+/** @typedef {import("./game").MoveResult} MoveResult} */
+
 // Get config file
 const config = (() => 
 {
@@ -138,13 +141,14 @@ wss.on("connection", (ws) =>
     ws.on("message", (msg) =>
     {
         // Parse message
+        /** @type {MessageObject} Message object*/
         const msgObj = JSON.parse(msg.toString());
 
         // Player sends their username
         if (msgObj.type === messages.T_JOIN)
         {
             // Set the username
-            game.setName(playerType, msgObj.user);
+            game.setName(playerType, msgObj.user.substr(0, 10));
 
             // If all players have joined, send game info to players
             if (game.isFull())
@@ -164,6 +168,7 @@ wss.on("connection", (ws) =>
         {
             try
             {
+                /** @type {MoveResult} Move result */
                 const moveResult = game.move(playerType, msgObj.column);
                 const opponent = game.getSocket(opponentType);
 

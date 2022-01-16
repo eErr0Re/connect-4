@@ -23,6 +23,7 @@
  * @typedef MessageObject
  * @type {object}
  * @property {MessageType} type Message type
+ * @property {string=} user Name of player
  * @property {string=} user1 Name of player 1
  * @property {string=} user2 Name of player 2
  * @property {PlayerType=} playerType Type of player
