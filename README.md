@@ -3,7 +3,7 @@
 A simple web game made with Node.js
 
 ## Installation
-Preliminaries:
+Prerequisites:
 * Node.js
 * npm
 
