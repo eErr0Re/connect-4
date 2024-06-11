@@ -4,3 +4,5 @@ jsconfig.json
 globals.d.ts
 credentials
 stats.json
+package-lock.json
+
